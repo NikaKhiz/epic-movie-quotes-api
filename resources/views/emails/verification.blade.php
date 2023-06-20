@@ -14,7 +14,7 @@
     <div style="width:100%;max-width:1280px;margin:0 auto;color:#ffffff;word-wrap:break-word;">
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
             <div style="width: 20px;height:20px;">
-                <img src="{{ asset('images/quotes.png') }}" alt="quoteImg"
+                <img src="{{ $message->embed(public_path() . '/images/quotes.png') }}" alt="quoteImg"
                     style="width:100%;display:block;object-fit:cover">
 
             </div>
