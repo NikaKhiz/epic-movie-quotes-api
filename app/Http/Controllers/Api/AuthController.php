@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\EmailVerifyRequest;
 use App\Models\User;
@@ -21,5 +22,21 @@ class AuthController extends Controller
 	{
 		$request->fulfill();
 		return response()->json(['success'], 204);
+	}
+
+	public function login(LoginRequest $request)
+	{
+		$fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+		$isUserVerified = User::firstWhere($fieldType, $request->email)['email_verified_at'] !== null;
+		if ($isUserVerified) {
+			if (auth()->attempt($request->validated(), $request->has('remember'))) {
+				session()->regenerate();
+				return  response()->json(['success'], 204);
+			} else {
+				return response()->json(['errors' => ['email' => ['provided credentials are incorrect']]], 401);
+			}
+		} else {
+			return response()->json(['errors'=> ['email' => ['user is not verified']]], 403);
+		}
 	}
 }
