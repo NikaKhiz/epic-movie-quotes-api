@@ -81,4 +81,10 @@ class AuthController extends Controller
 			return response()->json(['errors'=>['password' => [__($status)]]], 400);
 		}
 	}
+
+	public function logout()
+	{
+		auth()->logout();
+		return response()->json(['success'], 204);
+	}
 }
