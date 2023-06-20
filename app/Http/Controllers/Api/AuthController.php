@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RecoverPasswordRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\EmailVerifyRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Password;
 
 class AuthController extends Controller
 {
@@ -37,6 +39,18 @@ class AuthController extends Controller
 			}
 		} else {
 			return response()->json(['errors'=> ['email' => ['user is not verified']]], 403);
+		}
+	}
+
+	public function sendPasswordResetLink(RecoverPasswordRequest $request)
+	{
+		$status = Password::sendResetLink(
+			$request->validated()
+		);
+		if ($status === Password::RESET_LINK_SENT) {
+			return response()->json([], 204);
+		} else {
+			return response()->json(['errors'=>['email' => [__($status)]]], 400);
 		}
 	}
 }

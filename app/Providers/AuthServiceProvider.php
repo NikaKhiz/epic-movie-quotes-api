@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -33,6 +34,14 @@ class AuthServiceProvider extends ServiceProvider
 				'emails.verification',
 				['url' => $verifyUrl, 'name' => $notifiable->name]
 			);
+		});
+
+		ResetPassword::toMailUsing(function (object $notifiable, string $token) {
+			$passwordResetUrl = env('FRONT_URL') . '/reset-password' . '?token=' . $token . '&email=' . $notifiable->getEmailForPasswordReset();
+			return (new MailMessage())
+			->from('moviequotes@example.com', config('app.name'))
+			->subject('Reset Password')
+			->view('emails.resetPassword', ['name'=>$notifiable->name, 'url' => $passwordResetUrl, 'token' => $token]);
 		});
 	}
 }
