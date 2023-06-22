@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RecoverPasswordRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\ResendEmailVerificationLinkRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\EmailVerifyRequest;
 use App\Models\User;
@@ -22,6 +23,15 @@ class AuthController extends Controller
 		$user = User::create([...$request->validated(), 'password' => bcrypt($request->password)]);
 		event(new Registered($user));
 		return response()->json(['success'], 204);
+	}
+
+	public function resendEmailVerificationLink(ResendEmailVerificationLinkRequest $request)
+	{
+		$user = User::whereEmail($request->email)->first();
+		if ($user) {
+			event(new Registered($user));
+			return response()->json(['success'], 204);
+		}
 	}
 
 	public function verifyEmail(EmailVerifyRequest $request)
