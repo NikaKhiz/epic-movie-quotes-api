@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\OAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,4 +28,9 @@ Route::controller(AuthController::class)->group(function () {
 	Route::post('/forgot-password', 'sendPasswordResetLink')->name('forgot_password');
 	Route::post('/reset-password', 'resetPassword')->name('reset_password');
 	Route::get('/logout', 'logout')->name('logout');
+});
+
+Route::middleware('web')->controller(OAuthController::class)->group(function () {
+	Route::get('/auth/google/redirect', 'providerRedirect')->name('google_redirect');
+	Route::get('/auth/google/callback', 'providerCallback')->name('google_callback');
 });
