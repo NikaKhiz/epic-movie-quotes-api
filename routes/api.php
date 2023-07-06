@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\GenreController;
+use App\Http\Controllers\Api\MovieController;
 use App\Http\Controllers\Api\OAuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,8 +17,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-	return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+	Route::get('/user', function () {
+		return auth()->user();
+	});
+	Route::get('/genres', [GenreController::class, 'index']);
+	Route::controller(MovieController::class)->group(function () {
+		Route::get('/movies', 'index')->name('movies.index');
+		Route::get('/movies/{movie}', 'show')->name('movies.show');
+		Route::post('/movies', 'store')->name('movies.store');
+		Route::patch('/movies/{movie}', 'update')->name('movies.update');
+		Route::delete('/movies/{movie}', 'destroy')->name('movies.destroy');
+	});
 });
 
 Route::controller(AuthController::class)->group(function () {
