@@ -3,57 +3,19 @@
 namespace Database\Seeders;
 
 use App\Models\Genre;
+use App\Traits\GenreListTrait;
 use Illuminate\Database\Seeder;
 
 class GenreSeeder extends Seeder
 {
+	use GenreListTrait;
+
 	/**
 	 * Run the database seeds.
 	 */
 	public function run(): void
 	{
-		$genres = [
-			'Action',
-			'Adventure',
-			'Animated',
-			'Biography',
-			'Comedy',
-			'Crime',
-			'Dance',
-			'Disaster',
-			'Documentary',
-			'Drama',
-			'Erotic',
-			'Family',
-			'Fantasy',
-			'Found Footage',
-			'Historical',
-			'Horror',
-			'Independent',
-			'Legal',
-			'Live Action',
-			'Martial Arts',
-			'Musical',
-			'Mystery',
-			'Noir',
-			'Performance',
-			'Political',
-			'Romance',
-			'Satire',
-			'Science Fiction',
-			'Short',
-			'Silent',
-			'Slasher',
-			'Sports',
-			'Spy',
-			'Superhero',
-			'Supernatural',
-			'Suspense',
-			'Teen',
-			'Thriller',
-			'War',
-			'Western',
-		];
+		$genres = $this->getGenres();
 		foreach ($genres as $genre) {
 			Genre::updateOrInsert(
 				['genre' => $genre]
