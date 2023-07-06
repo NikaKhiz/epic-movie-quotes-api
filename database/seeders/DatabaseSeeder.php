@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
 		Storage::deleteDirectory('thumbnails');
 		Storage::makeDirectory('thumbnails');
 		\App\Models\Movie::factory(15)->create();
+		$this->call(GenreSeeder::class);
 		$genres = Genre::all();
 		$movies = Movie::all();
 		$movies->each(function ($movie) use ($genres) {
