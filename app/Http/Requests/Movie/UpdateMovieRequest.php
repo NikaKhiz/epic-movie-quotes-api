@@ -18,10 +18,11 @@ class UpdateMovieRequest extends FormRequest
 			'director'      => 'required|min:6|max:255',
 			'director_ka'   => 'required|min:6|max:255',
 			'title'         => ['required', 'min:6', 'max:255', Rule::unique('movies', 'title')->ignore($this->movie['id'])],
-			'title_ka'      => ['required', 'min:6', 'max:255', Rule::unique('movies', 'title_ka')->ignore($this->movie['id'])],
+			'title_ka'      => ['required', 'min:6', 'max:255', Rule::unique('movies', 'title->ka')->ignore($this->movie['id'])],
 			'description'   => 'required|min:6|max:255',
 			'description_ka'=> 'required|min:6|max:255',
 			'released'      => 'required',
+			'genres'        => 'required|array',
 			'thumbnail'     => 'nullable|image|mimes:png,jpg,svg',
 		];
 	}
