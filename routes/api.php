@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
 		Route::get('/movies', 'index')->name('movies.index');
 		Route::get('/movies/{movie}', 'show')->name('movies.show');
 		Route::post('/movies', 'store')->name('movies.store');
-		Route::patch('/movies/{movie}', 'update')->name('movies.update');
+		Route::post('/movies/{movie}', 'update')->name('movies.update');
 		Route::delete('/movies/{movie}', 'destroy')->name('movies.destroy');
 	});
 });
