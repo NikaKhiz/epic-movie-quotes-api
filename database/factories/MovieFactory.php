@@ -19,12 +19,12 @@ class MovieFactory extends Factory
 	{
 		$fakerKa = \Faker\Factory::create('ka_GE');
 		return [
-			'user'         => User::factory(),
-			'director'     => ['en' => $this->faker->name(), 'ka' => $fakerKa->realText(10)],
-			'title'        => ['en' => $this->faker->sentence(), 'ka' => $fakerKa->realText(20)],
-			'description'  => ['en' => $this->faker->sentence(), 'ka' => $fakerKa->realText(100)],
-			'released'     => $this->faker->date(),
-			'thumbnail'    => 'thumbnails/' . $this->faker->image(storage_path('/app/public/thumbnails'), 400, 300, null, false),
+			'user_id'         => User::factory(),
+			'director'        => ['en' => $this->faker->name(), 'ka' => $fakerKa->realText(10)],
+			'title'           => ['en' => $this->faker->sentence(), 'ka' => $fakerKa->realText(20)],
+			'description'     => ['en' => $this->faker->sentence(), 'ka' => $fakerKa->realText(100)],
+			'released'        => $this->faker->date(),
+			'thumbnail'       => 'thumbnails/' . $this->faker->image(storage_path('/app/public/thumbnails'), 400, 300, null, false),
 		];
 	}
 }
