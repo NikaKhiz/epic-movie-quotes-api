@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
 	{
 		Storage::deleteDirectory('thumbnails');
 		Storage::makeDirectory('thumbnails');
-		$this->call([GenreSeeder::class, MovieSeeder::class]);
+
+		$this->call([UserSeeder::class,   QuoteSeeder::class, GenreSeeder::class, MovieSeeder::class]);
 	}
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GenreController;
 use App\Http\Controllers\Api\MovieController;
 use App\Http\Controllers\Api\OAuthController;
+use App\Http\Controllers\Api\QuoteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
 	Route::get('/user', function () {
 		return auth()->user();
 	});
+
 	Route::get('/genres', [GenreController::class, 'index']);
 	Route::controller(MovieController::class)->prefix('movies')->group(function () {
 		Route::get('/', 'index')->name('movies.index');
@@ -28,6 +30,14 @@ Route::middleware('auth:sanctum')->group(function () {
 		Route::post('/', 'store')->name('movies.store');
 		Route::post('/{movie}', 'update')->name('movies.update');
 		Route::delete('/{movie}', 'destroy')->name('movies.destroy');
+	});
+
+	Route::controller(QuoteController::class)->prefix('quotes')->group(function () {
+		Route::get('/', 'index')->name('quotes.index');
+		Route::get('/{quote}', 'show')->name('quotes.show');
+		Route::post('/', 'store')->name('quotes.store');
+		Route::post('/{quote}', 'update')->name('quotes.update');
+		Route::delete('/{quote}', 'destroy')->name('quotes.destroy');
 	});
 });
 

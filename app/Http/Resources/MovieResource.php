@@ -26,6 +26,7 @@ class MovieResource extends JsonResource
 			'released'                        => $this->released,
 			'thumbnail'                       => Storage::url($this->thumbnail),
 			'genres'                          => GenreResource::collection($this->genres),
+			'quotes'                          => QuoteResource::collection($this->quotes)->sortByDesc('updated_at')->all(),
 		];
 	}
 }
