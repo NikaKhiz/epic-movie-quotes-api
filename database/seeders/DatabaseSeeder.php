@@ -4,8 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Genre;
-use App\Models\Movie;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,14 +16,6 @@ class DatabaseSeeder extends Seeder
 	{
 		Storage::deleteDirectory('thumbnails');
 		Storage::makeDirectory('thumbnails');
-		\App\Models\Movie::factory(15)->create();
-		$this->call(GenreSeeder::class);
-		$genres = Genre::all();
-		$movies = Movie::all();
-		$movies->each(function ($movie) use ($genres) {
-			$movie->genres()->attach(
-				$genres->random(1, 3)
-			);
-		});
+		$this->call([GenreSeeder::class, MovieSeeder::class]);
 	}
 }

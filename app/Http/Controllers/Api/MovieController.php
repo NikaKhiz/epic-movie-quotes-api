@@ -13,8 +13,8 @@ class MovieController extends Controller
 {
 	public function index(): JsonResponse
 	{
-		$user = auth()->user();
-		$movies = MovieResource::collection($user->movies->orderBy('created_at')->with('genres')->paginate(20));
+		$movie = Movie::where('user_id', '=', auth()->user()->id)->orderBy('created_at')->with('genres')->paginate(20);
+		$movies = MovieResource::collection($movie);
 		return response()->json(['movies'=>$movies]);
 	}
 
@@ -26,7 +26,14 @@ class MovieController extends Controller
 
 	public function store(StoreMovieRequest $request): JsonResponse
 	{
-		$movie = Movie::create([...$request->validated()]);
+		$movie = Movie::create([
+			...$request->validated(),
+			'thumbnail'      => $request->file('thumbnail')->store('thumbnails'),
+			'title'          => ['en' => $request->title, 'ka' => $request->title_ka],
+			'director'       => ['en' => $request->director, 'ka' => $request->director_ka],
+			'description'    => ['en' => $request->description, 'ka' => $request->description_ka],
+			'user_id'        => auth()->user()->id,
+		]);
 		$genres = [...$request['genres']];
 		$movie->genres()->attach($genres);
 		return response()->json(['success', 204]);
@@ -34,8 +41,16 @@ class MovieController extends Controller
 
 	public function update(UpdateMovieRequest $request, Movie $movie): JsonResponse
 	{
-		$movie->update([...$request->validated()]);
+		$movie->update([
+			...$request->validated(),
+			'thumbnail'   => $request->file('thumbnail')->store('thumbnails'),
+			'title'       => ['en' => $request->title, 'ka' => $request->title_ka],
+			'director'    => ['en' => $request->director, 'ka' => $request->director_ka],
+			'description' => ['en' => $request->description, 'ka' => $request->description_ka],
+			'user'        => auth()->user()->id,
+		]);
 		$genres = [...$request['genres']];
+		$movie->genres()->detach();
 		$movie->genres()->attach($genres);
 		return response()->json(['success', 204]);
 	}
