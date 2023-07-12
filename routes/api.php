@@ -22,12 +22,12 @@ Route::middleware('auth:sanctum')->group(function () {
 		return auth()->user();
 	});
 	Route::get('/genres', [GenreController::class, 'index']);
-	Route::controller(MovieController::class)->group(function () {
-		Route::get('/movies', 'index')->name('movies.index');
-		Route::get('/movies/{movie}', 'show')->name('movies.show');
-		Route::post('/movies', 'store')->name('movies.store');
-		Route::post('/movies/{movie}', 'update')->name('movies.update');
-		Route::delete('/movies/{movie}', 'destroy')->name('movies.destroy');
+	Route::controller(MovieController::class)->prefix('movies')->group(function () {
+		Route::get('/', 'index')->name('movies.index');
+		Route::get('/{movie}', 'show')->name('movies.show');
+		Route::post('/', 'store')->name('movies.store');
+		Route::post('/{movie}', 'update')->name('movies.update');
+		Route::delete('/{movie}', 'destroy')->name('movies.destroy');
 	});
 });
 
