@@ -13,8 +13,8 @@ class CommentController extends Controller
 	{
 		Comment::create([
 			...$request->validated(),
-			'user_id'=> auth()->user()->id,
+			'user_id'=> auth()->id(),
 		]);
-		return response()->json(['succes', 204]);
+		return response()->json([], 204);
 	}
 }
