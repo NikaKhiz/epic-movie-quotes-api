@@ -47,6 +47,7 @@ class QuoteController extends Controller
 
 	public function destroy(Quote $quote): JsonResponse
 	{
+		$quote->users()->detach();
 		$quote->delete();
 		return response()->json(['success', 204]);
 	}

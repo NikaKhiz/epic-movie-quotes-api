@@ -13,9 +13,10 @@ class LikeController extends Controller
 		$liked = $quote->users()->where('user_id', auth()->id())->first();
 		if ($liked) {
 			$quote->users()->detach();
+			return response()->json(['like'=>true], 200);
 		} else {
 			$quote->users()->attach([auth()->id()]);
+			return response()->json(['like'=>false], 200);
 		}
-		return response()->json(['succes', 204]);
 	}
 }
