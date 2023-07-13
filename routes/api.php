@@ -44,6 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 	Route::post('/quotes/{quote}/comment', [CommentController::class, 'store'])->name('comments.store');
 	Route::get('/quotes/{quote}/like', [LikeController::class, 'store'])->name('like.store');
+	Route::get('/quotes/{quote}/liked', [LikeController::class, 'index'])->name('like.index');
 });
 
 Route::controller(AuthController::class)->group(function () {
