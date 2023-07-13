@@ -18,7 +18,6 @@ class CommentResource extends JsonResource
 			'id'      => $this->id,
 			'quote_id'=> $this->quote_id,
 			'user'    => new UserResource($this->user),
-			'comment' => $this->comment,
 		];
 	}
 }
