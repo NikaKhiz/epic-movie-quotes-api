@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Quote;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,7 @@ class CommentFactory extends Factory
 	{
 		return [
 			'user_id' => 1,
-			'quote_id'=> fake()->randomDigit() + 1,
+			'quote_id'=> Quote::factory(),
 			'comment' => fake()->sentence(),
 		];
 	}
