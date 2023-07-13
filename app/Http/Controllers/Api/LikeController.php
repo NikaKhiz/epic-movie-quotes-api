@@ -10,7 +10,7 @@ class LikeController extends Controller
 {
 	public function store(Quote $quote): JsonResponse
 	{
-		$liked = $quote->likes()->where('user_id', auth()->user()->id)->first();
+		$liked = $quote->likes()->where('user_id', auth()->id())->first();
 		if ($liked) {
 			$liked->delete();
 		} else {

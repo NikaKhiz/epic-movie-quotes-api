@@ -13,7 +13,7 @@ class MovieController extends Controller
 {
 	public function index(): JsonResponse
 	{
-		$movie = Movie::where('user_id', '=', auth()->user()->id)->orderBy('created_at')->with('genres')->paginate(20);
+		$movie = Movie::where('user_id', '=', auth()->id())->orderBy('created_at')->with('genres')->paginate(20);
 		$movies = MovieResource::collection($movie);
 		return response()->json(['movies'=>$movies]);
 	}
