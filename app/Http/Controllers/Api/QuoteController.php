@@ -13,9 +13,9 @@ class QuoteController extends Controller
 {
 	public function index(): JsonResponse
 	{
-		$quote = Quote::all()->latest()->paginate(20);
+		$quote = Quote::latest()->paginate(20);
 		$quotes = QuoteResource::collection($quote);
-		return response()->json(['movies'=>$quotes]);
+		return response()->json(['quotes'=>$quotes]);
 	}
 
 	public function show(Quote $quote): JsonResponse

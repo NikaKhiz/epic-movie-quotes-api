@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\GenreController;
+use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\MovieController;
 use App\Http\Controllers\Api\OAuthController;
 use App\Http\Controllers\Api\QuoteController;
@@ -39,6 +41,9 @@ Route::middleware('auth:sanctum')->group(function () {
 		Route::post('/{quote}', 'update')->name('quotes.update');
 		Route::delete('/{quote}', 'destroy')->name('quotes.destroy');
 	});
+
+	Route::post('/quotes/{quote}/comment', [CommentController::class, 'store'])->name('comments.store');
+	Route::get('/quotes/{quote}/like', [LikeController::class, 'store'])->name('like.store');
 });
 
 Route::controller(AuthController::class)->group(function () {
