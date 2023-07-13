@@ -21,7 +21,7 @@ class QuoteResource extends JsonResource
 			'title_ka'                        => parent::toArray($request)['title']['ka'],
 			'thumbnail'                       => Storage::url($this->thumbnail),
 			'comments'                        => CommentResource::collection($this->comments),
-			'likes'                           => LikeResource::collection($this->likes),
+			'users'                           => $this->users->count(),
 		];
 	}
 }

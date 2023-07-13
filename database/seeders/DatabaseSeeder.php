@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder
 			GenreSeeder::class,
 			MovieSeeder::class,
 			CommentSeeder::class,
-			LikeSeeder::class,
 		]);
 	}
 }

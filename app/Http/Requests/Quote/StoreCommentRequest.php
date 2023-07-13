@@ -15,7 +15,7 @@ class StoreCommentRequest extends FormRequest
 	{
 		return [
 			'comment'  => 'required|min:6|max:255',
-			'quote_id' => 'required|exists:quote,id',
+			'quote_id' => 'required|exists:quotes,id',
 		];
 	}
 }

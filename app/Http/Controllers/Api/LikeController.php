@@ -10,13 +10,11 @@ class LikeController extends Controller
 {
 	public function store(Quote $quote): JsonResponse
 	{
-		$liked = $quote->likes()->where('user_id', auth()->id())->first();
+		$liked = $quote->users()->where('user_id', auth()->id())->first();
 		if ($liked) {
-			$liked->delete();
+			$quote->users()->detach();
 		} else {
-			$quote->likes()->create([
-				'user_id' => auth()->user()->id,
-			]);
+			$quote->users()->attach([auth()->id()]);
 		}
 		return response()->json(['succes', 204]);
 	}
