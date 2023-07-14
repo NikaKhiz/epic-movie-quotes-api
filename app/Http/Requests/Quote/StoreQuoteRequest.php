@@ -17,7 +17,7 @@ class StoreQuoteRequest extends FormRequest
 			'title'         => 'required|min:6|max:255',
 			'title_ka'      => 'required|min:6|max:255',
 			'thumbnail'     => 'nullable|image|mimes:png,jpg,svg',
-			'movie_id'      => 'required|exists:movie,id',
+			'movie_id'      => 'required|exists:movies,id',
 		];
 	}
 }

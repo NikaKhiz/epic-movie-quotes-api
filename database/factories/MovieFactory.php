@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,7 @@ class MovieFactory extends Factory
 	{
 		$fakerKa = \Faker\Factory::create('ka_GE');
 		return [
-			'user_id'         => 1,
+			'user_id'         => User::factory(),
 			'director'        => ['en' => $this->faker->name(), 'ka' => $fakerKa->realText(10)],
 			'title'           => ['en' => $this->faker->sentence(), 'ka' => $fakerKa->realText(20)],
 			'description'     => ['en' => $this->faker->sentence(), 'ka' => $fakerKa->realText(100)],
