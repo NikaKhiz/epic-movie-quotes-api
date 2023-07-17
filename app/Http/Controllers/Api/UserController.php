@@ -31,7 +31,7 @@ class UserController extends Controller
 
 		if ($userName) {
 			$user->update(['name'=>$request->name]);
-			return response()->json(['message'=>'profile name has been changed succesfully!'], 200);
+			return response()->json(['name'=>'profile name has been changed succesfully!'], 200);
 		}
 		if ($userEmail) {
 			$url = URL::temporarySignedRoute(
@@ -49,7 +49,7 @@ class UserController extends Controller
 				->to($userEmail)
 				->subject('Email Verification');
 			});
-			return response()->json(['message'=>'Check following email first and verify it!'], 200);
+			return response()->json(['email'=>'Check following email first and verify it!'], 200);
 		}
 		if ($password) {
 			$user->update(['password'=> Hash::make($request->password)]);
@@ -57,13 +57,13 @@ class UserController extends Controller
 		}
 		if ($profilePicture) {
 			$user->update(['profile_picture'=> $request->file('profile_picture')->store('thumbnails')]);
-			return response()->json(['message'=>'profile picture has been changed succesfully!'], 200);
+			return response()->json(['profile_picture'=>'profile picture has been changed succesfully!'], 200);
 		}
 	}
 
 	public function updateEmail(AuthUpdateEmailRequest $request): JsonResponse
 	{
 		Auth::user()->update(['email'=> $request->email]);
-		return response()->json(['message'=>'email has been changed succesfully!'], 200);
+		return response()->json(['email'=>'email has been changed succesfully!'], 200);
 	}
 }
