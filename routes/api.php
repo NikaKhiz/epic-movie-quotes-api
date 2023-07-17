@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\MovieController;
 use App\Http\Controllers\Api\OAuthController;
 use App\Http\Controllers\Api\QuoteController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,8 +22,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->group(function () {
-	Route::get('/user', function () {
-		return auth()->user();
+	Route::controller(UserController::class)->group(function () {
+		Route::get('/user', 'getUser')->name('user.get_user');
+		Route::post('/user/update', 'update')->name('user.update');
+		Route::post('/email/update/{id}/{hash}', 'updateEmail')->middleware('signed')->name('user.update_email');
 	});
 
 	Route::get('/genres', [GenreController::class, 'index']);
