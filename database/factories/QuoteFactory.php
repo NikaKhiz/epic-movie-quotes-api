@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Movie;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,7 @@ class QuoteFactory extends Factory
 	{
 		$fakerKa = \Faker\Factory::create('ka_GE');
 		return [
-			'user_id'  => 1,
+			'user_id'  => User::factory(),
 			'movie_id' => Movie::factory(),
 			'title'    => ['en'=>fake()->sentence(), 'ka'=>$fakerKa->realText(10)],
 			'thumbnail'=> 'thumbnails/' . $this->faker->image(storage_path('/app/public/thumbnails'), 400, 300, null, false),

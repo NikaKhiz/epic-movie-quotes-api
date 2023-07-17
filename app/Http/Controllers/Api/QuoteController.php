@@ -13,9 +13,8 @@ class QuoteController extends Controller
 {
 	public function index(): JsonResponse
 	{
-		$quote = Quote::all()->latest()->paginate(20);
-		$quotes = QuoteResource::collection($quote);
-		return response()->json(['movies'=>$quotes]);
+		$quote = Quote::latest()->paginate(20);
+		return response()->json(['quotes'=>QuoteResource::collection($quote)]);
 	}
 
 	public function show(Quote $quote): JsonResponse
@@ -48,6 +47,7 @@ class QuoteController extends Controller
 
 	public function destroy(Quote $quote): JsonResponse
 	{
+		$quote->users()->detach();
 		$quote->delete();
 		return response()->json(['success', 204]);
 	}
