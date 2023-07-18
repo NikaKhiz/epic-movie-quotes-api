@@ -7,17 +7,32 @@ use App\Http\Requests\Auth\UpdateEmailRequest as AuthUpdateEmailRequest;
 use App\Http\Requests\Auth\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Services\UpdateUserActiveEmailService;
+use App\Services\UpdateUserNameService;
+use App\Services\UpdateUserPasswordService;
+use App\Services\UpdateUserProfilePictureService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
 	private UpdateUserActiveEmailService $userEmailService;
 
-	public function __construct(UpdateUserActiveEmailService $userEmailService)
-	{
+	private UpdateUserNameService $userNameService;
+
+	private UpdateUserPasswordService $userPasswordService;
+
+	private UpdateUserProfilePictureService $userProfilePictureService;
+
+	public function __construct(
+		UpdateUserActiveEmailService $userEmailService,
+		UpdateUserNameService $userNameService,
+		UpdateUserPasswordService $userPasswordService,
+		UpdateUserProfilePictureService $userProfilePictureService
+	) {
 		$this->userEmailService = $userEmailService;
+		$this->userNameService = $userNameService;
+		$this->userPasswordService = $userPasswordService;
+		$this->userProfilePictureService = $userProfilePictureService;
 	}
 
 	public function getUser(): JsonResponse
@@ -34,19 +49,19 @@ class UserController extends Controller
 		$profilePicture = $request->profile_picture;
 
 		if ($userName) {
-			$user->update(['name'=>$request->name]);
+			$this->userNameService->updateUserName($request, $user);
 			return response()->json(['name'=>'profile name has been changed succesfully!'], 200);
 		}
 		if ($userEmail) {
-			$this->userEmailService->sendVerificationLink($userEmail);
+			$this->userEmailService->sendVerificationLink($request, $user);
 			return response()->json(['email'=>'Check following email first and verify it!'], 200);
 		}
 		if ($password) {
-			$user->update(['password'=> Hash::make($request->password)]);
+			$this->userPasswordService->updateUserPassword($request, $user);
 			return response()->json(['message'=>'password has been changed succesfully!'], 200);
 		}
 		if ($profilePicture) {
-			$user->update(['profile_picture'=> $request->file('profile_picture')->store('thumbnails')]);
+			$this->userProfilePictureService->updateUserProfilePicture($request, $user);
 			return response()->json(['profile_picture'=>'profile picture has been changed succesfully!'], 200);
 		}
 	}
