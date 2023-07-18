@@ -6,16 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\UpdateEmailRequest as AuthUpdateEmailRequest;
 use App\Http\Requests\Auth\UpdateUserRequest;
 use App\Http\Resources\UserResource;
-use Carbon\Carbon;
+use App\Services\UpdateUserActiveEmailService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
 
 class UserController extends Controller
 {
+	private UpdateUserActiveEmailService $userEmailService;
+
+	public function __construct(UpdateUserActiveEmailService $userEmailService)
+	{
+		$this->userEmailService = $userEmailService;
+	}
+
 	public function getUser(): JsonResponse
 	{
 		return response()->json(['user'=>new UserResource(auth()->user())], 200);
@@ -34,21 +38,7 @@ class UserController extends Controller
 			return response()->json(['name'=>'profile name has been changed succesfully!'], 200);
 		}
 		if ($userEmail) {
-			$url = URL::temporarySignedRoute(
-				'user.update_email',
-				Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
-				[
-					'id'   => auth()->id(),
-					'hash' => sha1($userEmail),
-				]
-			);
-			$verificationLink = str_replace(url('/api'), env('FRONT_URL'), $url) . '?email=' . $userEmail;
-			Mail::send('emails.verification', ['url'=>$verificationLink, 'name'=>auth()->user()->name], function ($message) use ($userEmail) {
-				$message
-				->from('moviequotes@example.com', config('app.name'))
-				->to($userEmail)
-				->subject('Email Verification');
-			});
+			$this->userEmailService->sendVerificationLink($userEmail);
 			return response()->json(['email'=>'Check following email first and verify it!'], 200);
 		}
 		if ($password) {
