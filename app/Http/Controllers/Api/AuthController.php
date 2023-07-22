@@ -47,7 +47,7 @@ class AuthController extends Controller
 		if ($isUserVerified) {
 			if (auth()->attempt($request->validated(), $request->has('remember'))) {
 				session()->regenerate();
-				return  response()->json(['success'], 204);
+				return  response()->json(['user'=>auth()->user()], 200);
 			} else {
 				return response()->json(['errors' => ['email' => ['provided credentials are incorrect']]], 401);
 			}
